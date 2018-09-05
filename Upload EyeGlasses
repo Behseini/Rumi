@@ -1,1 +1,41 @@
 
+<?php
+require_once("../../wp-load.php");
+$file = "http://localhost:8080/WP/Data.csv";
+if (($handle = fopen($file, "r")) !== FALSE) {
+    $count = 0;
+    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+        $count++;
+    if ($count == 1) { continue; }
+        if (count($data) > 1) {
+            we_load_posts($data[0], $data[1], $data[2],$data[3],$data[4]);
+        }
+    }
+    echo $count-1 . " Rows Successfuly Inserted";
+    fclose($handle);
+}
+
+function we_load_posts($title, $price, $color,$brand,$thumbnail)
+{
+    wp_insert_post(array(
+        "post_type" => "women_eyeglasses",
+        "post_title" => $title,
+        "meta_input" => array(
+            "price_box" => $price,
+            "colors_box" => $color,
+            "brandsOpt_box"=>$brand,
+            "thumbnail_box"=>$thumbnail,
+        ),
+        "post_status" => "publish"
+    ));
+    
+
+}
+
+
+
+title,price,color,brand,thumbnail
+GY12,man,red,Elizabeth Arden,http://localhost:8080/img/road.png
+GY11,pan,green,Jill Stuart,http://localhost:8080/img/2.png
+GY15,tan,amazing,Bertellei,http://localhost:8080/img/road2.png
+GY18,fan,blue,Elizabeth Arden,http://localhost:8080/img/road.png
