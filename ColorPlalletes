@@ -1,0 +1,35 @@
+<?php
+require_once("../../wp-load.php");
+$file = "http://localhost:8080/WP/Data2.csv";
+if (($handle = fopen($file, "r")) !== FALSE) {
+    $count = 0;
+    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+        $count++;
+    if ($count == 1) { continue; }
+        if (count($data) > 1) {
+            we_load_posts($data[0], $data[1]);
+        }
+    }
+    echo $count-1 . " Rows Successfuly Inserted";
+    fclose($handle);
+}
+
+function we_load_posts($title, $term)
+{
+    wp_insert_post(array(
+        "post_type" => "'we_colors",
+        "post_title" => $title,
+        "tax_input" => array(
+            // "women_models" => array($term)
+            "women_models" => $term
+        ),
+        "post_status" => "publish"
+    ));
+    
+
+}
+
+
+name,term
+Maral,SF-528
+Gozal,SF-531
